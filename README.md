@@ -1,7 +1,5 @@
 # Padloom Web Visualizer 🎨
 
-![Padloom Logo](https://padloom.com/cdn/shop/files/padloom-black-logo-1.svg)
-
 **Padloom Web Visualizer** is a Chrome extension designed to help gamers and setup enthusiasts preview custom mouse pads in real-time.
 
 ## 🚀 About the Project
