@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Padloom - Mouse Pad Visualizer",
+  "version": "3.0",
+  "description": "Visualize images on mouse pads, check quality, and find related gear.",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "scripting",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://*.padloom.com/*" 
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["style.css"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

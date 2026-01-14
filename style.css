@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&display=swap');
+
+:root {
+    /* Neon Tech Palette */
+    --pl-bg-main: #0a0b0e;   /* Çok derin, neredeyse siyah antrasit */
+    --pl-bg-card: rgba(20, 22, 28, 0.8); /* Yarı saydam kart rengi */
+    --pl-bg-hover: rgba(57, 255, 20, 0.1); /* Hover için neon yeşil tonu */
+    --pl-neon: #39FF14;      /* Bizim imza neon yeşilimiz */
+    --pl-neon-glow: rgba(57, 255, 20, 0.6); /* Parlama efekti için */
+    --pl-text-primary: #ffffff;
+    --pl-text-secondary: #b0b8c4; /* Daha modern bir gri */
+    --pl-border: #1e222b;    /* İnce, teknolojik kenarlık */
+    --pl-success: var(--pl-neon); /* Başarı rengi de neon olsun */
+}
+
+#padloom-extension-root {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 2147483647; font-family: 'Inter', sans-serif; pointer-events: none;
+}
+
+/* Hareketli Arka Plan */
+#padloom-extension-root .pl-overlay {
+  width: 100%; height: 100%;
+  background-color: var(--pl-bg-main);
+  /* Dinamik, teknolojik bir gradyan animasyonu */
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(57, 255, 20, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(0, 200, 255, 0.05) 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: plBgShift 20s ease infinite alternate, plFadeIn 0.4s ease-out forwards;
+  backdrop-filter: blur(10px);
+  display: flex; justify-content: center; align-items: center;
+  pointer-events: auto; opacity: 0;
+}
+
+#padloom-extension-root .pl-modal {
+  width: 95%; max-width: 1200px; height: 750px;
+  background: rgba(10, 11, 14, 0.95); /* Neredeyse opak ama cam hissi var */
+  border: 1px solid var(--pl-border);
+  border-radius: 16px; /* Daha modern yuvarlak köşeler */
+  /* Çift katmanlı gölge ve hafif neon parlama */
+  box-shadow: 
+    0 0 0 1px rgba(57, 255, 20, 0.1),
+    0 30px 80px rgba(0, 0, 0, 0.8);
+  display: flex; flex-direction: column; overflow: hidden;
+  transform: scale(0.95); opacity: 0; /* Başlangıç durumu */
+}
+
+/* Header - Dinamik Vurgular */
+#padloom-extension-root .pl-header {
+  height: 70px; padding: 0 30px; border-bottom: 1px solid var(--pl-border);
+  display: flex; justify-content: space-between; align-items: center; 
+  background: var(--pl-bg-card); backdrop-filter: blur(5px);
+}
+#padloom-extension-root .pl-brand { 
+    font-weight: 800; color: var(--pl-text-primary); font-size: 18px; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 10px;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+#padloom-extension-root .pl-brand::before {
+    content: ''; display: block; width: 10px; height: 10px; background: var(--pl-neon); border-radius: 2px;
+    box-shadow: 0 0 15px var(--pl-neon); animation: plPulse 2s infinite;
+}
+#padloom-extension-root .pl-accent { color: var(--pl-neon); }
+#padloom-extension-root .pl-close { 
+    cursor: pointer; color: var(--pl-text-secondary); font-size: 24px; 
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 8px; border-radius: 50%;
+}
+#padloom-extension-root .pl-close:hover { 
+    color: var(--pl-neon); background: var(--pl-bg-hover);
+    transform: rotate(90deg); box-shadow: 0 0 15px var(--pl-neon-glow);
+}
+
+#padloom-extension-root .pl-body-split { display: flex; flex: 1; overflow: hidden; }
+
+/* LEFT SIDE - PREVIEW (Geniş ve Odaklanmış) */
+#padloom-extension-root .pl-preview-side {
+    flex: 3;
+    /* Hafif dokulu, teknolojik zemin */
+    background: 
+        linear-gradient(to bottom, rgba(10,11,14,0) 0%, rgba(10,11,14,1) 100%),
+        url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKMjIy/MYiwsLAwMjIy/sYigmAAgQYAEhYI5Zg3Fz8AAAAASUVORK5CYII=');
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; border-right: 1px solid var(--pl-border); padding: 25px;
+}
+#padloom-extension-root .pl-preview-wrapper { width: 100%; height: 100%; display:flex; flex-direction:column; align-items:center; justify-content: center; }
+
+#padloom-extension-root .pl-preview-container {
+    width: 95%; max-width: none;
+    background: #000;
+    border-radius: 12px;
+    position: relative; overflow: hidden;
+    cursor: grab; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Pedin altından hafif neon sızması */
+    box-shadow: 
+        0 0 0 1px #1e222b,
+        0 20px 50px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(57, 255, 20, 0.1) inset;
+}
+#padloom-extension-root .pl-preview-container:active { cursor: grabbing; scale: 0.99; }
+#padloom-extension-root .pl-mousepad { width: 100%; height: 100%; background-repeat: no-repeat; }
+
+/* Texture Overlay - Daha teknolojik bir doku */
+#padloom-extension-root .pl-texture-overlay {
+    position: absolute; top:0; left:0; width:100%; height:100%;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N8fHxqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhqeHhlZEZUAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvzkUuAAAAz0lEQVR42u3OyQ7CMAxE0eIEG8LG7iRd2v3/r5QZKkGjKCI5d+7Mg7QufrUopbW/lFk7E5GkL8X8T1GRe8Zq9+vAms7b2jLrkH1q76xrdm4sZc4iF+fKsuZc0q6wFlnO5X3OW2S5lq0r8xZZrmXryrxFlmvZurJskb4P65Dlm3XJsmW5YtmybFmuWLb/L1t/1iXLluWKZcuyZblieWfZslxxXjJdsmxZLm3r594i91y+d+4tcl8tN/cWubX93Fvknsq+J98i95i/7q1F7rX8uLd/0w2wR15qHfgAAAAASUVORK5CYII=');
+    opacity: 0.2; mix-blend-mode: overlay; pointer-events: none;
+}
+
+#padloom-extension-root .pl-controls-hint {
+    margin-top: 25px; font-size: 12px; color: var(--pl-text-secondary); font-weight: 600; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 20px; text-transform: uppercase;
+}
+#padloom-extension-root .pl-controls-hint span { display: flex; align-items: center; gap: 8px;}
+#padloom-extension-root .pl-controls-hint svg { fill: var(--pl-neon); width: 16px; height: 16px; } /* İkonları neon yapabiliriz */
+
+/* INFO BAR - Bembeyaz ve Parlak */
+#padloom-extension-root .pl-info-bar { 
+    margin-top: 30px; display: flex; gap: 20px; align-items: center; 
+}
+/* DÜZELTİLDİ: Yazı rengi ve parlama efekti */
+#padloom-extension-root .pl-size-text {
+    color: var(--pl-text-primary); font-size: 20px; font-weight: 700; letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+}
+
+#padloom-extension-root .pl-badge {
+    font-size: 12px; padding: 8px 14px; border-radius: 20px;
+    font-weight: 700; background: rgba(57, 255, 20, 0.15); color: var(--pl-neon);
+    display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;
+    border: 1px solid var(--pl-neon-glow);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) inset;
+}
+
+/* RIGHT SIDE - OPTIONS (Cam Efekti) */
+#padloom-extension-root .pl-options-side {
+    flex: 1; 
+    background: rgba(20, 22, 28, 0.6); /* Yarı saydam */
+    backdrop-filter: blur(15px); /* Güçlü buzlu cam efekti */
+    display: flex; flex-direction: column;
+    min-width: 360px; max-width: 400px; border-left: 1px solid var(--pl-border);
+}
+#padloom-extension-root .pl-scroll-area { padding: 30px; overflow-y: auto; flex: 1; }
+#padloom-extension-root .pl-section-title { 
+    font-weight: 700; color: var(--pl-text-primary); margin-bottom: 20px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 10px;
+}
+#padloom-extension-root .pl-section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--pl-border);
+}
+
+/* Size Grid - Dinamik Butonlar */
+#padloom-extension-root .pl-size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 35px; }
+#padloom-extension-root .pl-size-mini {
+    padding: 16px; background: rgba(30, 34, 43, 0.5); border: 1px solid var(--pl-border); border-radius: 10px;
+    color: var(--pl-text-secondary); text-align: center; font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#padloom-extension-root .pl-size-mini:hover { 
+    border-color: var(--pl-neon); color: var(--pl-text-primary); background: var(--pl-bg-hover);
+    transform: translateY(-3px) scale(1.02); /* Hafif büyüme ve yukarı kalkma */
+    box-shadow: 0 5px 15px rgba(57, 255, 20, 0.2); /* Neon gölge */
+}
+#padloom-extension-root .pl-size-mini.active { 
+    background: var(--pl-bg-hover);
+    border-color: var(--pl-neon); color: var(--pl-neon);
+    box-shadow: 0 0 20px var(--pl-neon-glow) inset, 0 0 10px var(--pl-neon-glow);
+}
+
+/* Related Products Card - Holografik His */
+#padloom-extension-root .pl-related-card-dummy {
+    display: flex; align-items: center; gap: 15px;
+    padding: 18px; background: rgba(30, 34, 43, 0.5); border: 1px solid var(--pl-border);
+    border-radius: 12px; text-decoration: none; color: var(--pl-text-primary); 
+    transition: all 0.3s ease;
+}
+#padloom-extension-root .pl-related-card-dummy:hover { 
+    border-color: var(--pl-neon); background: var(--pl-bg-hover);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(57, 255, 20, 0.15);
+}
+#padloom-extension-root .pl-r-icon { font-size: 26px; text-shadow: 0 0 10px var(--pl-neon); }
+#padloom-extension-root .pl-r-text { font-size: 13px; line-height: 1.5; color: var(--pl-text-secondary); }
+#padloom-extension-root .pl-r-text b { color: var(--pl-neon); font-weight: 700; }
+
+/* Sticky Actions */
+#padloom-extension-root .pl-actions-sticky {
+    padding: 30px; border-top: 1px solid var(--pl-border); 
+    background: rgba(20, 22, 28, 0.8); backdrop-filter: blur(10px);
+}
+
+/* Coupon Box - Dinamik Dashed */
+#padloom-extension-root .pl-coupon-box {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(30, 34, 43, 0.5); border: 1px dashed var(--pl-border); border-radius: 10px;
+    padding: 14px 20px; margin-bottom: 25px; cursor: pointer; transition: all 0.3s ease;
+}
+#padloom-extension-root .pl-coupon-box:hover { 
+    border-color: var(--pl-neon); background: var(--pl-bg-hover);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+    transform: scale(1.02);
+}
+#padloom-extension-root .pl-c-text { font-size: 13px; color: var(--pl-text-secondary); font-weight: 600;}
+#padloom-extension-root .pl-code { color: var(--pl-neon); font-weight: 800; margin-left: 10px; font-size: 15px; letter-spacing: 1px; text-shadow: 0 0 10px var(--pl-neon-glow);}
+#padloom-extension-root .pl-c-copy { font-size: 12px; color: var(--pl-text-primary); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+/* Buttons - Neon Power */
+#padloom-extension-root .pl-neon-btn {
+  background: var(--pl-neon);
+  color: #000; padding: 18px; width: 100%; border-radius: 10px;
+  font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; font-size: 15px; letter-spacing: 1.5px;
+  display: block; text-align: center; text-decoration: none; box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+  position: relative; overflow: hidden;
+}
+/* Buton içi parlama efekti */
+#padloom-extension-root .pl-neon-btn::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.4), transparent);
+    transform: rotate(45deg); transition: 0.5s; opacity: 0;
+}
+#padloom-extension-root .pl-neon-btn:hover { 
+    box-shadow: 0 0 40px rgba(57, 255, 20, 0.8); 
+    transform: translateY(-3px) scale(1.02);
+}
+#padloom-extension-root .pl-neon-btn:hover::after { opacity: 1; left: 100%; }
+
+#padloom-extension-root .pl-neon-btn.outline { 
+    background: transparent; border: 2px solid var(--pl-neon); color: var(--pl-neon);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) inset;
+}
+#padloom-extension-root .pl-neon-btn.outline:hover { 
+    background: var(--pl-neon); color: #000; border-color: transparent;
+    box-shadow: 0 0 40px rgba(57, 255, 20, 0.8);
+}
+#padloom-extension-root .hidden { display: none !important; }
+
+/* Animasyonlar */
+@keyframes plFadeIn { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+}
+@keyframes plModalPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes plBgShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+@keyframes plPulse {
+    0% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); }
+}
+
+/* Modal açılış animasyonunu tetikle */
+#padloom-extension-root .pl-modal {
+    animation: plModalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.1s;
+}
